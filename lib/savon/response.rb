@@ -3,8 +3,9 @@ require "nori"
 class Savon
   class Response
 
-    def initialize(raw_response)
+    def initialize(raw_response, snakecase = true)
       @raw_response = raw_response
+      @snakecase = snakecase
     end
 
     def raw
@@ -12,12 +13,12 @@ class Savon
     end
 
     def body
-      hash[:envelope][:body]
+      @snakecase ? hash[:envelope][:body] : hash[:Envelope][:Body]
     end
     alias to_hash body
 
     def header
-      hash[:envelope][:header]
+      @snakecase ? hash[:envelope][:header] : hash[:Envelope][:Header]
     end
 
     def hash
@@ -39,7 +40,8 @@ class Savon
 
       nori_options = {
         strip_namespaces: true,
-        convert_tags_to: lambda { |tag| tag.snakecase.to_sym }
+        convert_tags_to: lambda { |tag| 
+          @snakecase ? tag.snakecase.to_sym : tag.to_sym }
       }
 
       non_nil_nori_options = nori_options.reject { |_, value| value.nil? }

@@ -21,6 +21,7 @@ class Savon
       @soap_version = operation.soap_version
       @soap_action = operation.soap_action
       @encoding = ENCODING
+      @wsa = example_wsa
     end
 
     # Public: Accessor for the SOAP endpoint.
@@ -72,13 +73,17 @@ class Savon
 
     # Public: Build the request XML for this operation.
     def build
-      Envelope.new(@operation, header, body).to_s
+      if(wsa and wsa[:enable_wsa] == true)
+        Envelope.new(@operation, header, body, wsa).to_s
+      else
+        Envelope.new(@operation, header, body).to_s
+      end
     end
 
     # Public: Call the operation.
     def call
       raw_response = @http.post(endpoint, http_headers, build)
-      Response.new(raw_response)
+      Response.new(raw_response, convert_to_snakecase)
     end
 
     # Public: Returns the input style for this operation.
@@ -90,6 +95,31 @@ class Savon
     def output_style
       @output_style ||= @operation.output_style
     end
+
+    # Public: Returns an example WS-A configureation hash.
+    def example_wsa
+      {
+        enable_wsa: false,
+        must_understand: nil,
+        version: 200508,
+        action: nil,
+        to: nil,
+        reply_to: nil,
+        reply_to_params: nil,
+        message_id: nil,
+        from: nil,
+        fault_to: nil,
+        fault_to_params: nil,
+        relates_to: nil,
+        relationship_type: nil
+      }
+    end
+
+    # Public: Accessor for setting WS-A headers.
+    attr_accessor :wsa
+
+    # Public: Determines if response should be converted to snakecase.
+    attr_accessor :convert_to_snakecase
 
   end
 end
