@@ -78,7 +78,7 @@ class Savon
         xml.tag!(:env, :header, build_wsa_namespace) { |xml| 
           xml.tag!(:wsa, :Action, namespaces) { |xml| xml << ( @wsa_options[:action] || @operation.soap_action ) }
 
-          xml.tag!(:wsa, :To, namespaces) { |xml| xml << @wsa_options[:to] || @operation.endpoint }
+          xml.tag!(:wsa, :To, namespaces) { |xml| xml << ( @wsa_options[:to] || @operation.endpoint ) }
 
           (xml.tag!(:wsa, :ReplyTo, namespaces) { |xml|
             xml.tag!(:wsa, :Address) { |xml| xml << @wsa_options[:reply_to]}
