@@ -108,6 +108,7 @@ class Savon
         return {'xmlns:wsa' => "http://www.w3.org/2004/08/addressing"}
       else
         return {'xmlns:wsa' => "http://www.w3.org/2005/08/addressing"}
+      end
     end
 
     def build_rpc_wrapper(body)
