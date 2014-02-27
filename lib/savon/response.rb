@@ -13,12 +13,14 @@ class Savon
     end
 
     def body
-      @snakecase ? hash[:envelope][:body] : hash[:Envelope][:Body]
+      (@snakecase ? hash[:envelope][:body] : hash[:Envelope][:Body]) if hash
+      nil
     end
     alias to_hash body
 
     def header
-      @snakecase ? hash[:envelope][:header] : hash[:Envelope][:Header]
+     (@snakecase ? hash[:envelope][:header] : hash[:Envelope][:Header]) if hash
+     nil
     end
 
     def hash
