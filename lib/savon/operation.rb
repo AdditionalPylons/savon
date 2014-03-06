@@ -83,7 +83,7 @@ class Savon
     # Public: Call the operation.
     def call
       raw_response = @http.post(endpoint, http_headers, build)
-      Response.new(raw_response, convert_to_snakecase || true)
+      Response.new(raw_response, convert_to_snakecase.nil? ? true : convert_to_snakecase)
     end
 
     # Public: Returns the input style for this operation.
