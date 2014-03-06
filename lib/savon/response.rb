@@ -13,13 +13,13 @@ class Savon
     end
 
     def body
-      return (@snakecase ? hash[:envelope][:body] : hash[:Envelope][:Body]) if hash
+      return (@snakecase == true ? hash[:envelope][:body] : hash[:Envelope][:Body]) if hash
       nil
     end
     alias to_hash body
 
     def header
-      return (@snakecase ? hash[:envelope][:header] : hash[:Envelope][:Header]) if hash
+      return (@snakecase == true ? hash[:envelope][:header] : hash[:Envelope][:Header]) if hash
       nil
     end
 
@@ -43,7 +43,7 @@ class Savon
       nori_options = {
         strip_namespaces: true,
         convert_tags_to: lambda { |tag| 
-          @snakecase ? tag.snakecase.to_sym : tag.to_sym }
+          @snakecase == true ? tag.snakecase.to_sym : tag.to_sym }
       }
 
       non_nil_nori_options = nori_options.reject { |_, value| value.nil? }

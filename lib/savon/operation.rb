@@ -22,6 +22,8 @@ class Savon
       @soap_action = operation.soap_action
       @encoding = ENCODING
       @wsa = example_wsa
+
+      this.convert_to_snakecase = true
     end
 
     # Public: Accessor for the SOAP endpoint.
