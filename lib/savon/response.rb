@@ -3,7 +3,7 @@ require "nori"
 class Savon
   class Response
 
-    def initialize(raw_response, snakecase = true)
+    def initialize(raw_response, snakecase)
       @raw_response = raw_response
       @snakecase = snakecase
     end
@@ -45,7 +45,7 @@ class Savon
         convert_tags_to: lambda { |tag| 
           @snakecase == true ? tag.snakecase.to_sym : tag.to_sym }
       }
-
+      binding.pry
       non_nil_nori_options = nori_options.reject { |_, value| value.nil? }
       @nori = Nori.new(non_nil_nori_options)
     end
